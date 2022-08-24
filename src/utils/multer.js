@@ -58,9 +58,9 @@ const getS3 = () => {
     const { AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_KEY } = process.env;
 
     const myConfig = new AWS.Config({
-        region: "us-east-1",
-        accessKeyId: 'AKIASRLXJUEZIMN63KEZ',
-        secretAccessKey: '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',
+        region: AWS_REGION,
+        accessKeyId: AWS_ACCESS_KEY_ID,
+        secretAccessKey: AWS_SECRET_KEY,
         signatureVersion: "v4",
     });
 
