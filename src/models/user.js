@@ -19,10 +19,18 @@ const userSchema = new mongoose.Schema({
   gender: {
     type: String,
   },
+  favourites: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "College",
+    required: true,
+  }],
   address: {
     type: String,
   },
   password: {
+    type: String
+  },
+  userType: {
     type: String
   },
   created_at: { type: Date, default: Date.now },

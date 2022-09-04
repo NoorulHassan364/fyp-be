@@ -2,20 +2,27 @@ const mongoose = require("mongoose");
 // const user = require("./userModel")
 const collegeSchema = new mongoose.Schema(
     {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
         name: {
             type: String,
             required: true,
         },
         discription: {
             type: String,
-            reuired: true,
+            // reuired: true,
         },
         location: String,
         image: {
             type: String,
-            required: true,
+            // required: true,
         },
         allImages: [String],
+        phone: String,
+        prospectus: String,
         averageCost: {
             type: Number,
             required: true,
