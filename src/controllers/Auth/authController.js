@@ -1,5 +1,7 @@
 const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
 class Auth {
   signup = async (req, res) => {
     try {
@@ -96,6 +98,46 @@ class Auth {
       });
     }
   };
+
+  updateUser = async (req, res) => {
+    try {
+      const resUser = await User.findByIdAndUpdate(req.params.id, req.body);
+      return res.status(200).json({
+        status: "success",
+        data: resUser,
+        // message: "deposit Successfully!",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        status: "error",
+        message: "server error",
+      });
+    }
+  };
+
+  changePassword = async (req, res) => {
+    try {
+      let user = await User.findById(req.params.id);
+      if (await user.correctPassword(req.body.oldPassword, user.password)) {
+        let pass = await bcrypt.hash(req.body.newPassword, 10);
+        const resUser = await User.findByIdAndUpdate(req.params.id, { password: pass });
+        return res.status(200).json({
+          status: "success",
+          data: resUser,
+        });
+      }
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        status: "error",
+        message: "server error",
+      });
+    }
+  };
 }
+
+
 
 module.exports = new Auth();

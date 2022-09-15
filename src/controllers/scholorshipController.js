@@ -21,7 +21,7 @@ exports.addScholorship = async (req, res) => {
 
 exports.getScholorships = async (req, res) => {
     try {
-        let scholorships = await Scholorship.find({}).populate("collegeId");
+        let scholorships = await Scholorship.find({});
         res.status(201).json({
             status: "success",
             data: scholorships
@@ -63,6 +63,30 @@ exports.updateInstituteScholorships = async (req, res) => {
 exports.deleteInstituteScholorships = async (req, res) => {
     try {
         let scholorship = await Scholorship.findByIdAndDelete(req.params.id);
+        res.status(201).json({
+            status: "success",
+            data: scholorship
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error.message);
+    }
+}
+
+exports.applyToScholorship = async (req, res) => {
+    try {
+        let user = await User.findById(req.params.userId);
+        let scholorship = await Scholorship.findByIdAndUpdate(req.params.id, {
+            $push: {
+                applications: {
+                    userId: user?._id,
+                    name: `${user?.firstName} ${user?.firstName}`,
+                    phone: user?.phone,
+                    email: user?.email,
+                    address: user?.address
+                }
+            }
+        }, { new: true });
         res.status(201).json({
             status: "success",
             data: scholorship

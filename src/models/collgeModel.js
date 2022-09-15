@@ -46,6 +46,10 @@ const collegeSchema = new mongoose.Schema(
             type: Number,
             required: true
         },
+        admissionFee: {
+            type: Number,
+            required: true
+        },
         degreeAndPrograms: [
             {
                 subject: {

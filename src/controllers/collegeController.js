@@ -61,7 +61,7 @@ exports.addCollegeToFavourite = async (req, res) => {
             {
                 path: "favourites",
             },
-        ]);;
+        ]);
         res.status(201).json({
             status: "success",
             data: favouriteCollege

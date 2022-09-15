@@ -31,6 +31,9 @@ const scholoshipSchema = new mongoose.Schema(
         },
         applications: [
             {
+                userId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                },
                 name: {
                     type: String,
                 },
@@ -40,15 +43,9 @@ const scholoshipSchema = new mongoose.Schema(
                 phone: {
                     type: String,
                 },
-                adress: {
+                address: {
                     type: String,
                 },
-                file: {
-                    type: String,
-                },
-                currentUni: {
-                    type: String,
-                }
             }
         ],
     }
