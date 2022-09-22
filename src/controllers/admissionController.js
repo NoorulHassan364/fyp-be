@@ -8,7 +8,7 @@ exports.getCheckOutSession = async (req, res, next) => {
     try {
         let college = await collegeModel.findById(req.params.collegeId);
         let user = await UserModel.findById(req.params.studentId);
-
+        console.log('college', college?.image);
         let admission = await admissionModel.create({ ...req.body, admissionFee: college?.admissionFee });
 
         const session = await stripe.checkout.sessions.create({
@@ -19,7 +19,7 @@ exports.getCheckOutSession = async (req, res, next) => {
                     unit_amount: college?.admissionFee,
                     product_data: {
                         name: `${college?.name}`,
-                        description: 'Comfortable cotton t-shirt',
+                        // description: 'Comfortable cotton t-shirt',
                         images: [college?.image],
                     },
                 },
@@ -67,7 +67,6 @@ const createCheckoutBooking = async (session) => {
 }
 
 exports.webhookCheckout = (req, res, next) => {
-    console.log("i am called .....")
     let event;
     try {
         const signature = req.headers['stripe-signature'];
