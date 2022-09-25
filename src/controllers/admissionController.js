@@ -2,6 +2,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const collegeModel = require("../models/collgeModel");
 const UserModel = require("../models/user");
 const admissionModel = require("../models/admissionModel");
+const mongoose = require("mongoose");
 
 
 exports.getCheckOutSession = async (req, res, next) => {
@@ -86,4 +87,53 @@ exports.webhookCheckout = (req, res, next) => {
         createCheckoutBooking(event.data.object)
     }
     res.status(200).json({ received: true })
+}
+
+exports.userAdmissions = async (req, res) => {
+    try {
+        console.log(req.params.id)
+        let admissions = await admissionModel.find({ userId: mongoose.Types.ObjectId(req.params.id), paid: true }).populate({ path: 'userId', path: 'collegeId' });
+
+        console.log('admissions', admissions);
+        res.status(201).json({
+            status: "success",
+            data: admissions
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error.message);
+    }
+}
+
+exports.admissionDetail = async (req, res) => {
+    try {
+        console.log(req.params.id)
+        let admission = await admissionModel.findById(req.params.id).populate({ path: 'userId', path: 'collegeId' });
+
+        res.status(201).json({
+            status: "success",
+            data: admission
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error.message);
+    }
+}
+
+exports.getCollegeAdmissions = async (req, res) => {
+    try {
+        console.log(req.params.id)
+        // let user = await UserModel.findById(req.params.id);
+        let college = await collegeModel.findOne({ user: mongoose.Types.ObjectId(req.params.id) })
+        console.log('college', college)
+        let admission = await admissionModel.find({ collegeId: mongoose.Types.ObjectId(college?._id) }).populate({ path: 'userId', path: 'collegeId' });
+
+        res.status(201).json({
+            status: "success",
+            data: admission
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error.message);
+    }
 }

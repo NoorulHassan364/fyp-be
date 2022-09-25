@@ -6,7 +6,11 @@ const pastPaperSchema = new mongoose.Schema(
             ref: "College",
             required: true,
         },
-        name: {
+        subject: {
+            type: String,
+            required: true,
+        },
+        classSemester: {
             type: String,
             required: true,
         },
