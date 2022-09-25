@@ -9,6 +9,7 @@ exports.getCheckOutSession = async (req, res, next) => {
         let college = await collegeModel.findById(req.params.collegeId);
         let user = await UserModel.findById(req.params.studentId);
         console.log('college', college?.image);
+        console.log('getCheckOutSession req.body', req.body)
         let admission = await admissionModel.create({ ...req.body, admissionFee: college?.admissionFee });
 
         const session = await stripe.checkout.sessions.create({
@@ -75,7 +76,7 @@ exports.webhookCheckout = (req, res, next) => {
         event = stripe.webhooks.constructEvent(
             req.body,
             signature,
-            'whsec_rfVhkxQLglIK7VugDZ27Ym0pqPos6jN7'
+            'whsec_315ArVDJNnJd3H6SEaZYyOIQovSV0Duw'
         )
     } catch (error) {
         return res.status(400).send(`Webhook error: ${error.message}`)
