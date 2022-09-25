@@ -59,13 +59,13 @@ const createCheckoutBooking = async (session) => {
     // console.log("createCheckoutBooking called")
     let admissionId = session.client_reference_id;
     console.log('admissionId', admissionId)
-    // let user = (await UserModel.findOne({ email: session.customer_email }));
+    let user = await UserModel.findOne({ email: session.customer_email });
     // console.log("session.line_items[0]", session.line_items[0])
     // console.log("session.line_items[0]", session.display_items[0])
     // const price = session.display_items[0].amount / 100;
     // let price = session.amount_total;
     // console.log("college user price", college, user, price)
-    await admissionModel.findByIdAndUpdate(admissionId, { paid: true });
+    await admissionModel.findOneAndUpdate({ userId: user?._id, collegeId: admissionId }, { paid: true });
 }
 
 exports.webhookCheckout = (req, res, next) => {
