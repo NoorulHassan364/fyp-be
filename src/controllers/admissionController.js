@@ -15,8 +15,8 @@ exports.getCheckOutSession = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [{
                 price_data: {
-                    currency: 'usd',
-                    unit_amount: college?.admissionFee,
+                    currency: 'pkr',
+                    unit_amount: college?.admissionFee * 100,
                     product_data: {
                         name: `${college?.name}`,
                         // description: 'Comfortable cotton t-shirt',
@@ -67,6 +67,7 @@ const createCheckoutBooking = async (session) => {
 }
 
 exports.webhookCheckout = (req, res, next) => {
+    console.log('inside webhookCheckout', req.body);
     let event;
     try {
         const signature = req.headers['stripe-signature'];
