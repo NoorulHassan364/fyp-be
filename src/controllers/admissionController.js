@@ -30,7 +30,7 @@ exports.getCheckOutSession = async (req, res, next) => {
             success_url: `${process.env.SUCCESS_PAYMENT_URL}/${req.params.collegeId}`,
             cancel_url: `${process.env.CANCEL_PAYMENT_URL}/${req.params.collegeId}`,
             customer_email: user?.email,
-            client_reference_id: admission?._id,
+            client_reference_id: req.params.collegeId,
         });
 
         res.status(200).json({
