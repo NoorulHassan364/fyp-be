@@ -10,8 +10,8 @@ exports.getCheckOutSession = async (req, res, next) => {
         let user = await UserModel.findById(req.params.studentId);
         console.log('college', college?.image);
         console.log('getCheckOutSession req.body', req.body)
-        let admission = await admissionModel.create({ ...req.body, admissionFee: college?.admissionFee });
-
+        let admission = await admissionModel.create({ ...req.body, admissionFee: college?.admissionFee, collegeId: college?._id, userId: user?._id });
+        console.log('admission', admission)
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{
@@ -57,14 +57,14 @@ exports.getCheckOutSession = async (req, res, next) => {
 const createCheckoutBooking = async (session) => {
     console.log("session", session)
     console.log("createCheckoutBooking called")
-    let college = session.client_reference_id;
+    let admissionId = session.client_reference_id;
     let user = (await UserModel.findOne({ email: session.customer_email }));
     // console.log("session.line_items[0]", session.line_items[0])
     // console.log("session.line_items[0]", session.display_items[0])
     // const price = session.display_items[0].amount / 100;
     let price = session.amount_total;
     console.log("college user price", college, user, price)
-    await admissionModel.findByIdAndUpdate({ paid: true });
+    await admissionModel.findByIdAndUpdate(admissionId, { paid: true });
 }
 
 exports.webhookCheckout = (req, res, next) => {

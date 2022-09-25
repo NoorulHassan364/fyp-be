@@ -10,6 +10,16 @@ const admissionSchema = new mongoose.Schema({
     email: {
         type: String,
     },
+    collegeId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "College",
+        required: true,
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     phone: {
         type: String,
     },
@@ -59,7 +69,8 @@ const admissionSchema = new mongoose.Schema({
         type: Number,
     },
     paid: {
-        type: false,
+        type: Boolean,
+        default: false
     },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
